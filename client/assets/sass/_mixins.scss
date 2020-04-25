@@ -1,0 +1,38 @@
+@mixin flexCenter($direction: column) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin backgroundImage($url) {
+    background-image: url($url);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+@mixin backgroundPattern($url) {
+    background-image: url($url);
+    background-repeat: repeat;
+}
+
+@mixin shadow() {
+    box-shadow: 0 0 3px rgba(#000, .8);
+}
+
+@mixin overlate($percent: .6) {
+    position: relative;
+    z-index: 1;
+    &::before {
+        z-index: -1;
+        position: absolute;
+        content: '';
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: rgba(#000, $percent);
+    }
+}

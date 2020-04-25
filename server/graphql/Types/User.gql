@@ -1,0 +1,39 @@
+
+type User {
+  _id: ID!
+  username: String!
+  email: String!
+  age: Int!
+  tokenVersion: Int!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  getUsers: [User]!,
+  getUser(id: ID!): User!
+}
+
+input RegisterInput {
+  email: String!,
+  username: String!,
+  password: String!,
+  age: Int!,
+}
+
+input LoginInput {
+  email: String!,
+  password: String!,
+}
+
+type LoginResponse {
+  user: User!,
+  accessToken: String!,
+}
+
+type Mutation {
+  register(input: RegisterInput): User!
+  login(input: LoginInput): LoginResponse!
+  logout: Boolean!
+  revokeToken: Boolean!
+}
