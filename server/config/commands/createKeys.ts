@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import createKey from '../../../utils/createKey';
+import createKey from '../../../utils/secrets/createKey';
 import { toError, fold } from 'fp-ts/lib/Either';
 import { IOEither, tryCatch, chain } from 'fp-ts/lib/IOEither'
 import { pipe } from 'fp-ts/lib/pipeable';

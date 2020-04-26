@@ -10,7 +10,7 @@ import { tryCatch as TE_tryCatch } from 'fp-ts/lib/TaskEither';
 import middlewares from './middlewares';
 import { pipe } from 'fp-ts/lib/pipeable';
 import dbConnection from './config/dbConnection';
-import { setSecretKeys } from '../utils/keys';
+import { setSecretKeys } from '../utils/secrets/keys';
 
 
 const dev = process.env.NODE_ENV !== 'production';

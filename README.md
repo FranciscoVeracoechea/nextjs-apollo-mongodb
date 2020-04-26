@@ -1,12 +1,20 @@
-# Next.js with TypeScript example
+# Fullstack Next.js advanced starter proyect
+
+## Feactures
+  - Typescript
+  - MatarialUI
+  - GraphQL (Apollo)
+  - Preconfigured Authentication (JWT)
+  - Tslint
+  - Functional Programming Style (fp-ts, rxjs)
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/mui-org/material-ui):
+Download the example [or clone the repo](https://github.com/FranciscoVeracoechea/nextjs-apollo-mongodb):
 
 ```sh
-curl https://codeload.github.com/mui-org/material-ui/tar.gz/master | tar -xz --strip=2  material-ui-master/examples/nextjs-with-typescript
-cd nextjs-with-typescript
+git clone https://github.com/FranciscoVeracoechea/nextjs-apollo-mongodb.git
+cd nextjs-apollo-mongodb
 ```
 
 Install it and run:
@@ -14,13 +22,6 @@ Install it and run:
 ```sh
 npm install
 npm run dev
-```
-
-or
-
-```sh
-yarn
-yarn dev
 ```
 
 ## The idea behind the example

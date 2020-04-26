@@ -7,9 +7,9 @@ import { toError } from 'fp-ts/lib/Either';
 import { pipe } from 'fp-ts/lib/pipeable';
 
 
-const ACCESS_TOKEN_PATH = '../server/config/keys/accessToken.key';
-const REFRESH_TOKEN_PATH = '../server/config/keys/refressToken.key';
-const COOKIE_PATH = '../server/config/keys/cookie.key';
+const ACCESS_TOKEN_PATH = '../../server/config/keys/accessToken.key';
+const REFRESH_TOKEN_PATH = '../../server/config/keys/refressToken.key';
+const COOKIE_PATH = '../../server/config/keys/cookie.key';
 
 const readFile = (p: string) => tryCatch(
   () => fs.readFileSync(path.join(__dirname, p), 'utf8'), 

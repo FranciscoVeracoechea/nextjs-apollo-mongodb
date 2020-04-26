@@ -1,6 +1,6 @@
 {
-  "name": "nextjs-with-typescript",
-  "version": "4.0.0",
+  "name": "nextjs-apollo-mongodb",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
