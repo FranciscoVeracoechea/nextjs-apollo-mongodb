@@ -27,16 +27,16 @@ const NextComposed = React.forwardRef<HTMLAnchorElement, NextComposedProps>((pro
 });
 
 interface LinkPropsBase {
-  activeClassName?: string;
-  innerRef?: React.Ref<HTMLAnchorElement>;
-  naked?: boolean;
+  readonly activeClassName?: string;
+  readonly innerRef?: React.Ref<HTMLAnchorElement>;
+  readonly naked?: boolean;
 }
 
 export type LinkProps = LinkPropsBase & NextComposedProps & Omit<MuiLinkProps, 'href'>;
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
-function Link(props: LinkProps) {
+const Link = (props: LinkProps) => {
   const {
     href,
     activeClassName = 'active',
@@ -52,19 +52,17 @@ function Link(props: LinkProps) {
     [activeClassName]: router.pathname === pathname && activeClassName,
   });
 
-  if (naked) {
-    return <NextComposed className={className} ref={innerRef} href={href} {...other} />;
-  }
-
-  return (
-    <MuiLink
-      component={NextComposed}
-      className={className}
-      ref={innerRef}
-      href={href as string}
-      {...other}
-    />
-  );
+  return naked
+    ? (
+      <MuiLink
+        component={NextComposed}
+        className={className}
+        ref={innerRef}
+        href={href as string}
+        {...other}
+      />
+    )
+  : <NextComposed className={className} ref={innerRef} href={href} {...other} />;
 }
 
 export default React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
