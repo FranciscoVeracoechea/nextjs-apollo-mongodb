@@ -5,6 +5,11 @@ import Box from '@material-ui/core/Box';
 import MuiLink from '@material-ui/core/Link';
 import ProTip from '../client/components/ProTip';
 import Link from '../client/components/Link';
+import { gql } from 'apollo-boost';
+import { withApollo } from '../lib/withApollo';
+import { useQuery } from '@apollo/react-hooks';
+// import useAuth from '../client/hooks/useAuth';
+
 
 const Copyright: React.FC = () => {
   return (
@@ -19,7 +24,19 @@ const Copyright: React.FC = () => {
   );
 };
 
-const Index: React.FC = () => {
+const GET_USERS = gql`
+  query {
+    getUsers {
+      email
+      username
+      age
+      createdAt
+      tokenVersion
+    }
+  }
+`;
+const Index: React.FC<{}> = () => {
+  const { data, error } = useQuery(GET_USERS);
   return (
     <Container maxWidth="sm">
       <Box my={4}>
@@ -29,10 +46,17 @@ const Index: React.FC = () => {
         <Link href="/about">
           Go to the about page
         </Link>
+        <Typography variant="body1" gutterBottom>
+          {JSON.stringify(data, undefined, 2)}
+        </Typography>
+        <Typography variant="body1" color="error">
+          {JSON.stringify(error, undefined, 2)}
+        </Typography>
         <ProTip />
         <Copyright />
       </Box>
     </Container>
   );
 }
-export default Index;
+
+export default withApollo()(Index);

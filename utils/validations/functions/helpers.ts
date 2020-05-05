@@ -20,7 +20,7 @@ export const throwError = (e: any) => {
 
 export const inputError = (
   errors: any
-) => new UserInputError('Invalid input paramaters', { errors });
+) => new UserInputError('Invalid input paramaters', errors);
 
 export const throwAny = (a: any) => {
   throw a;

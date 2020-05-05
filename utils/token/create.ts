@@ -10,9 +10,10 @@ export const accessToken = (user: IUser) => sign(
   },
   process.env.ACCESS_TOKEN_SECRET!,
   {
-    expiresIn: process.env.ACCESS_TOKEN_LIFE,
+    expiresIn: `${process.env.ACCESS_TOKEN_LIFE}m`,
   }
 );
+
 
 export const refreshToken = (user: IUser) => sign(
   {
@@ -22,6 +23,6 @@ export const refreshToken = (user: IUser) => sign(
   },
   process.env.REFRESH_TOKEN_SECRET!,
   {
-    expiresIn: process.env.REFRESH_TOKEN_LIFE,
+    expiresIn: `${process.env.REFRESH_TOKEN_LIFE}d`,
   }
 );

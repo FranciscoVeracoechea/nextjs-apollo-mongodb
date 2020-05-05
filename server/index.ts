@@ -17,7 +17,6 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 // helpers
-// const log = (x: any) => () => tryCatch(() => console.log(x), toError);
 const createServer = (): IOEither<Error, Application> => tryCatch(() => express(), toError);
 const nextjsHandler = (
   server: Application

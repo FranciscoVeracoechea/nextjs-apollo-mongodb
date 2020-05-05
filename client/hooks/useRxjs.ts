@@ -1,19 +1,24 @@
 import { Observable } from 'rxjs'
 import { useEffect, useState } from 'react'
 
-const useRxjs = <T>(obs: Observable<T>, init = {}) => {
-  const [state, setState] = useState(init);
-  const [errorState, setErrorState] = useState(null);
-  const [completeState, setCompleteState] = useState(false);
+const useRxjs = <T>(obs: Observable<T>, init: T) => {
+  const [value, setValue] = useState<T>(init);
+  const [error, setErrorState] = useState<Error | null>(null);
+  const [complete, setCompleteState] = useState<boolean>(false);
   
   // tslint:disable-next-line: no-expression-statement
-  useEffect(() => obs.subscribe(
-      setState,
+  useEffect(() => {
+    const sub = obs.subscribe(
+      setValue,
       setErrorState,
       () => setCompleteState(true)
-  ).unsubscribe);
+    );
+    return () => sub.unsubscribe();
+  });
 
-  return [state, errorState, completeState];
+  return {
+    value, error, complete
+  };
 }
 
 export default useRxjs;

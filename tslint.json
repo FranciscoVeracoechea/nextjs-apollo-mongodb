@@ -13,13 +13,14 @@
     "no-this": true,
     "no-class": true,
     "no-mixed-interface": true,
-    "no-expression-statement": true,
+    "no-expression-statement": false,
     "no-if-statement": true
   },
   "linterOptions": {
     "exclude": [
       "node_modules",
-      "server/models/**"
+      "server/models/**",
+      "lib/**"
     ]
   }
 }

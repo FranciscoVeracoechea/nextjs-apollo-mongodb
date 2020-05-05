@@ -2,11 +2,12 @@ import mongoose, { Schema, Model, Document, HookNextFunction } from 'mongoose';
 import crypto from 'crypto';
 import uniqueValidator from 'mongoose-unique-validator';
 import { inputError } from '../../utils/validations/functions/helpers';
+import withVirtualId from './withVirtualId';
 
 
 // * types -----------------------------------
-interface IUserSchema extends Document{
-  _id: string;
+interface IUserSchema extends Document {
+  id: string;
   email: string;
   username: string;
   salt?: string;
@@ -81,7 +82,7 @@ UserSchema.methods.checkPassword = function(password: string) {
 
 // hooks
 UserSchema.pre<IUser>('save', function(next) {
-  this.salt = crypto.randomBytes(128).toString('hex');
+  this.salt = crypto.randomBytes(68).toString('hex');
   this.password = this.encryptPassword(this.password);
   next();
 });
@@ -98,9 +99,9 @@ UserSchema.post('save', function(error: any, _doc: IUser, next: HookNextFunction
   );
 });
 
-
 UserSchema.plugin(uniqueValidator, { message: 'Two users cannot share the same {PATH} ({VALUE})' });
 
+withVirtualId(UserSchema);
 
 export const User = mongoose.model<IUser, IUserModel>('User', UserSchema);
 export type User = typeof User;

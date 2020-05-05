@@ -13,5 +13,4 @@ export type Request = (req: AjaxRequest) => Observable<AjaxUpdate>;
 export type RequestOptions = AjaxRequest
   & {
     readonly withProgress?: boolean
-    readonly useBaseUrl?: boolean
   }

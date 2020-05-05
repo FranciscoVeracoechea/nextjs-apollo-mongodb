@@ -11,9 +11,9 @@ import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { flow } from 'fp-ts/lib/function';
 import { inputError, log } from '../../../utils/validations/functions/helpers';
 import { LoginInput } from '../../../utils/validations/Login';
-import { accessToken } from '../../../utils/token/create';
+import { accessToken, refreshToken } from '../../../utils/token/create';
 import { AuthenticationError } from 'apollo-server-express';
-import send from '../../../utils/token/send';
+import sendToken from '../../../utils/token/send';
 import { withAuth } from '../../../utils/validations/Auth';
 
 // * queries
@@ -24,6 +24,8 @@ const getUser: Resolver<ShowQuery> = (_, input, { validations }) => of(
   mergeMap(({ id }) => findUserByID(id)),
   catchError(e => throwError(validations.inputError(e)))
 ).toPromise();
+
+const me: Resolver<{}> = (_, _i, ctx) => withAuth(ctx).toPromise();
 
 const getUsers: Resolver<{}> = (_, _i, ctx) => withAuth(ctx).pipe(
   mergeMap(() => from(User.find({}).exec()))
@@ -47,22 +49,26 @@ const login: Resolver<Input<LoginInput>> = (_, { input }, { validations, res }) 
         of({
           user,
           accessToken: `Bearer ${accessToken(user)}`,
+          refreshToken: refreshToken(user),
         }),
         throwError(new AuthenticationError("Invalid credentials"))
       )),
-      tap(result => send(result.user)(res))
+      tap(
+        ({ user }) => sendToken(refreshToken(user))(res)
+      )
     )
     .toPromise();
 };
 
 
 const logout: Resolver<{}> = (_, _i, ctx) => withAuth(ctx).pipe(
-  tap(user => send(user, true)(ctx.res)),
+  tap(() => sendToken()(ctx.res)),
   map(() => true),
 ).toPromise();
 
 const revokeToken: Resolver<{}> = (_, _i, ctx) => withAuth(ctx).pipe(
   mergeMap(user => updateOne(user, { $inc: { tokenVersion: 1 } })),
+  tap(() => sendToken()(ctx.res)),
   map(() => true),
 ).toPromise();  
   
@@ -71,6 +77,7 @@ export default {
   Query: {
     getUser,
     getUsers,
+    me,
   },
   Mutation: {
     register,
