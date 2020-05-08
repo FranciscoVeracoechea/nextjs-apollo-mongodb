@@ -2,7 +2,7 @@ import React from 'react';
 import App from 'next/app';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { resize$ } from '../client/store/Device';
+import { resize$ } from '../client/services/Device';
 import { fromNullable, fold } from 'fp-ts/lib/Option';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { noop } from 'rxjs';

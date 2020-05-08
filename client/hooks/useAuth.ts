@@ -1,4 +1,4 @@
-import User$, { UserStore } from '../store/User$';
+import { UserStore } from '../services/AuthService';
 import { useEffect } from 'react';
 import { useObservable } from 'react-use';
 

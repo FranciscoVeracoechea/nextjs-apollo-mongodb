@@ -2,14 +2,16 @@ import { ApolloLink, Observable } from 'apollo-link';
 import { onError } from "apollo-link-error";
 import { HttpLink } from 'apollo-link-http';
 import JwtDecode from 'jwt-decode';
-import User$, { UserStore } from '../client/store/User$';
+import { AuthService, onAuth, updateAuth } from '../client/services/AuthService';
 import { NextPageContext } from 'next';
 import { Request } from 'express';
 import { fetchWithAuth } from '../utils/request/fetch';
 import { Payload } from '../utils/interfaces/Payload';
+import { switchMap } from 'rxjs/operators';
+import { iif } from 'rxjs';
 
 
-const decodeToken = ({ accessToken }: UserStore): Payload => JwtDecode(accessToken!);
+const decodeToken = ({ accessToken }: AuthService): Payload => JwtDecode(accessToken!);
 
 const serverFetch = (ctx: NextPageContext) => (input: RequestInfo, init?: RequestInit) => {
   const req = ctx?.req as Request;
@@ -21,33 +23,38 @@ const serverFetch = (ctx: NextPageContext) => (input: RequestInfo, init?: Reques
         Authorization: req.signedCookies.refreshToken as string,
       },
     }).then(response => response.json())
-      .then((data: UserStore) => fetchWithAuth(data.accessToken!, input, init))
+      .then((data: AuthService) => fetchWithAuth(data.accessToken!, input, init))
     : fetch(input, init);
 };
 
 const fetchRefreshToken = () => {
   return fetch('/refresh_token', { method: 'post', credentials: 'include' })
     .then(response => response.json())
-    .then((data: UserStore) => {
-      User$.next(data);
+    .then((data: AuthService) => {
+      updateAuth(data);
       return data;
     });
 }
 
 const clientFetch = async (input: RequestInfo, init?: RequestInit) => {
-  const login = User$.getValue();
-  const isTokenDefined = typeof login.accessToken === 'string';
-  
-  if (isTokenDefined && (Date.now() >= decodeToken(login).exp * 1000)) {
-    return fetchRefreshToken()
-      .then(data => fetchWithAuth(data.accessToken!, input, init));
-  }
-  if (login.ok && isTokenDefined) return fetchWithAuth(login.accessToken!, input, init);
-
-  return fetch(input, init);
+  return onAuth().pipe(
+    switchMap(login => {
+      const isTokenDefined = typeof login.accessToken === 'string';
+      return iif(
+        () => isTokenDefined && (Date.now() >= decodeToken(login).exp * 1000),
+        fetchRefreshToken()
+          .then(data => fetchWithAuth(data.accessToken!, input, init)),
+        iif(
+          () => login.ok && isTokenDefined,
+          fetchWithAuth(login.accessToken!, input, init),
+          fetch(input, init),
+        )
+      )
+    })
+  ).toPromise();
 };
 
-const fetchRefreshToken$ = new Observable<UserStore>(observer => {
+const fetchRefreshToken$ = new Observable<AuthService>(observer => {
   fetchRefreshToken()
     .then(data => {
       observer.next(data);
