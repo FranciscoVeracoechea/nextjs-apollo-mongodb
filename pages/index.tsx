@@ -8,7 +8,7 @@ import Link from '../client/components/Link';
 import { gql } from 'apollo-boost';
 import { withApollo } from '../lib/withApollo';
 import { useQuery } from '@apollo/react-hooks';
-// import useAuth from '../client/hooks/useAuth';
+import useAuth from '../client/hooks/useAuth';
 
 
 const Copyright: React.FC = () => {
@@ -36,6 +36,7 @@ const GET_USERS = gql`
   }
 `;
 const Index: React.FC<{}> = () => {
+  useAuth();
   const { data, error } = useQuery(GET_USERS);
   return (
     <Container maxWidth="sm">
@@ -59,4 +60,4 @@ const Index: React.FC<{}> = () => {
   );
 }
 
-export default withApollo()(Index);
+export default withApollo({ ssr: true })(Index);

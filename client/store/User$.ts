@@ -13,4 +13,8 @@ const User$ = new BehaviorSubject<UserStore>({
 });
 
 
+export const updateState = (newState: { [P in keyof UserStore]?: UserStore[P] }) => {
+  User$.next({ ...User$.getValue(), ...newState });
+}
+
 export default User$;

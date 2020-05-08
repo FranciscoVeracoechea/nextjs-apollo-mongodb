@@ -1,16 +1,12 @@
-import useRxjs from './useRxjs';
-import User$ from '../store/User$';
+import User$, { UserStore } from '../store/User$';
 import { useEffect } from 'react';
-// import { fromFetch } from 'rxjs/fetch';
-// import { iif } from 'rxjs';
-// import { switchMap } from 'rxjs/operators';
-import { UserStore } from '../store/User$';
+import { useObservable } from 'react-use';
 
+
+const initialState = { ok: false };
 
 const useAuth = (): UserStore => {
-  
-  const { value } = useRxjs(User$, { ok: false });
-
+  const value = useObservable(User$, initialState);
   useEffect(() => {
     // tslint:disable-next-line: no-if-statement
     if (!value.ok) {
@@ -19,7 +15,7 @@ const useAuth = (): UserStore => {
     } else {
       console.log(value);
     }
-  }, [value.ok])
+  }, [value.ok]);
 
   return value;
   
