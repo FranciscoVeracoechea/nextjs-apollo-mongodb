@@ -33,11 +33,11 @@ export const setSecretKeys = () => pipe(
   chain(
     keys => tryCatch(
       () => {
-        // tslint:disable-next-line: no-expression-statement no-object-mutation
+        // tslint:disable-next-line: no-object-mutation
         process.env['ACCESS_TOKEN_SECRET'] = keys.ACCESS_TOKEN;
-        // tslint:disable-next-line: no-expression-statement no-object-mutation
+        // tslint:disable-next-line: no-object-mutation
         process.env['REFRESH_TOKEN_SECRET'] = keys.REFRESH_TOKEN;
-        // tslint:disable-next-line: no-expression-statement no-object-mutation
+        // tslint:disable-next-line: no-object-mutation
         process.env['COOKIE_SECRET'] = keys.COOKIE;
       },
       toError

@@ -7,7 +7,7 @@ import { ErrorResponse } from '../index';
 // helpers
 
 export const log = <T>(s: T) => {
-  // tslint:disable-next-line: no-expression-statement
+  
   console.log(s);
   return s;
 }

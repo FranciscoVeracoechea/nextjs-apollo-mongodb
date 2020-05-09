@@ -1,4 +1,4 @@
-import { User } from '../../models/User';
+import { User, IUser } from '../../models/User';
 import { Resolver } from '../../../utils/interfaces/Resolver';
 import { Input } from '../../../utils/validations';
 import { of, throwError, from, iif } from 'rxjs';
@@ -74,6 +74,9 @@ const revokeToken: Resolver<{}> = (_, _i, ctx) => withAuth(ctx).pipe(
   
 
 export default {
+  User: {
+    id: (user: IUser) => user._id,
+  },
   Query: {
     getUser,
     getUsers,

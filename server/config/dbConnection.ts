@@ -16,15 +16,17 @@ export default () => {
     DB_PASSWORD,
   } = process.env;
 
-  const setConnection: IO<void> =
-    () => mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
-    user: DB_USERNAME,
-    pass: DB_PASSWORD,
-    useCreateIndex: true,
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  });
+  const setConnection: IO<void> = () => mongoose.connect(
+    `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+    {
+      user: DB_USERNAME,
+      pass: DB_PASSWORD,
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    }
+  );
 
   const onEvent: IO<void> =
     () => mongoose.connection.on(
@@ -32,9 +34,9 @@ export default () => {
     );
 
   const onceEvent: IO<void> =
-  () => mongoose.connection.once(
-    'open', console.info.bind(console, 'Database connection susccess!')
-  );
+    () => mongoose.connection.once(
+      'open', console.info.bind(console, 'Database connection susccess!')
+    );
   
 
   return tryCatch(() => array.sequence(io)([

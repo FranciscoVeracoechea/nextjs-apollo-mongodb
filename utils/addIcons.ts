@@ -14,7 +14,7 @@ import {
 
 // tslint:disable-next-line: no-object-mutation no-expression-statement
 config.autoAddCss = false;
-// tslint:disable-next-line: no-expression-statement
+
 library.add(
   faReact, faCodeBranch, faInstagram, faGithubSquare, faLinkedin,
   faAddressCard, faPhone, faStar, faBriefcase, faDrum, faBirthdayCake,

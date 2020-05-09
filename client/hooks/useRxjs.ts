@@ -6,7 +6,7 @@ const useRxjs = <T>(obs: Observable<T>, init: T) => {
   const [error, setErrorState] = useState<Error | null>(null);
   const [complete, setCompleteState] = useState<boolean>(false);
   
-  // tslint:disable-next-line: no-expression-statement
+  
   useEffect(() => {
     const sub = obs.subscribe(
       setValue,

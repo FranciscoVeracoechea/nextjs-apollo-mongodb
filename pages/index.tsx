@@ -27,11 +27,9 @@ const Copyright: React.FC = () => {
 const GET_USERS = gql`
   query {
     getUsers {
+      id
       email
       username
-      age
-      createdAt
-      tokenVersion
     }
   }
 `;

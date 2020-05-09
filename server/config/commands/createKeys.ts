@@ -33,7 +33,7 @@ const computation = pipe(
   chain(() => log(`Secret keys have been saved!`)),
   chain(exit)
 );
-// tslint:disable-next-line: no-expression-statement
+
 fold(
   console.error,
   console.log,

@@ -10,7 +10,6 @@ import { io } from 'fp-ts/lib/IO';
 import { array } from 'fp-ts/lib/Array';
 import theme from '../utils/theme';
 import NextNprogress from 'nextjs-progressbar';
-// import User$ from '../client/store/User$';
 import '../utils/addIcons';
 
 // tslint:disable-next-line: no-class
@@ -19,12 +18,6 @@ export default class MyApp extends App {
   // tslint:disable-next-line: typedef
   componentDidMount() {
     return array.sequence(io)([
-      // () => {
-      //   return fetch(`/refresh_token`, {
-      //     method: 'post',
-      //     credentials: 'include',
-      //   }).then(response => response.json()).then(r => User$.next(r))
-      // },
       () => pipe(
         fromNullable(document.querySelector('#jss-server-side')),
         fold(

@@ -22,9 +22,8 @@ export class TokenError extends Error {
   // tslint:disable-next-line: readonly-keyword
   status: number;
   constructor(message: string, status = 401) {
-    // tslint:disable-next-line: no-expression-statement
     super(message);
-    // tslint:disable-next-line: no-expression-statement no-this
+    // tslint:disable-next-line: no-this
     this.status = status;
   }
 }

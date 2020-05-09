@@ -12,7 +12,7 @@ export default (server: Application) => {
     resolvers,
     context: ({ req, res }) => ({ req, res, pubsub, validations: Validations, })
   });
-  // tslint:disable-next-line: no-expression-statement
+  
   apollo.applyMiddleware({ app: server });
   return server;
 };

@@ -18,12 +18,13 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 // helpers
 const createServer = (): IOEither<Error, Application> => tryCatch(() => express(), toError);
+
 const nextjsHandler = (
   server: Application
 ) => server.use((req: Request, res: Response, _next) => {
-  return (
-    req.path !== '/graphql' && req.path !== '/refresh_token'
-  ) ? handle(req, res) : null;
+  const expressRoutes: ReadonlyArray<string> = ['/graphql', '/refresh_token'];
+  !expressRoutes.includes(req.path)
+    ? handle(req, res) : null;
 });
 
 const main = pipe(
@@ -34,25 +35,23 @@ const main = pipe(
   map(nextjsHandler),
 );
 
-const program = () => TE_tryCatch(
+const program = TE_tryCatch(
   () => app.prepare().then(main),
   reason => new Error(String(reason))
 );
 
-// tslint:disable-next-line: no-expression-statement
-program()().then(
-  e => pipe(
+program()
+  .then(e => pipe(
     flatten(e),
     fold(
       console.error,
       server => server.listen(
         process.env.NODE_PORT!,
-        (err) => err
+        err => err
           ? console.error(err)
           : console.log(
             `> Ready on localhost:${process.env.NODE_PORT} - env ${process.env.NODE_ENV}`
           )
       ),
     )
-  )
-);
+  ));

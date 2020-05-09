@@ -1,24 +1,16 @@
-import { UserStore } from '../services/AuthService';
+import { AuthService, onAuth, updateAuth, initialState } from '../services/AuthService';
 import { useEffect } from 'react';
 import { useObservable } from 'react-use';
 
 
-const initialState = { ok: false };
+const useAuth = (): AuthService => {
+  const value = useObservable(onAuth(), initialState);
 
-const useAuth = (): UserStore => {
-  const value = useObservable(User$, initialState);
   useEffect(() => {
-    // tslint:disable-next-line: no-if-statement
-    if (!value.ok) {
-      // * do something! the user is not authenticated
-      console.warn(value);
-    } else {
-      console.log(value);
-    }
-  }, [value.ok]);
+    updateAuth({ isRequired: true });
+  }, []);
 
   return value;
-  
 }
 
 export default useAuth;
